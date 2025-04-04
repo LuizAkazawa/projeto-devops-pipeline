@@ -17,7 +17,6 @@ def send_email():
     msg["To"] = receiver_email
     msg["Subject"] = "Notificação: Pipeline Iniciado"
     
-    # Corpo HTML
     body = """
     <p>O pipeline foi iniciado com sucesso!</p>
     <p><b>Atenção:</b> Este é um e-mail automático.</p>
