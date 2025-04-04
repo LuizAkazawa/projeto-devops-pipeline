@@ -46,4 +46,4 @@ if __name__ == "__main__":
     parser.add_argument("--tipo", required=True)
     args = parser.parse_args()
 
-    send_email(args.sender, args.password, args.receiver)
+    send_email(args.sender, args.password, args.receiver, args.tipo)
