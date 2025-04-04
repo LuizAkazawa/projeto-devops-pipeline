@@ -8,7 +8,7 @@ def send_email():
     smtp_server = "smtp.gmail.com"
     port = 587
     sender_email = os.environ["GMAIL_EMAIL"]
-    password = os.environ["GMAIL_PASSWORD"]  # Usar APP PASSWORD
+    password = os.environ["GMAIL_PASSWORD"]
     receiver_email = os.environ["DESTINATARIO_EMAIL"]
 
     # Criar mensagem
