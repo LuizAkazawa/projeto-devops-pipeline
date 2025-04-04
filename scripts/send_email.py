@@ -2,7 +2,7 @@ import smtplib
 import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+#
 def send_email():
     # Configurações Gmail
     smtp_server = "smtp.gmail.com"
