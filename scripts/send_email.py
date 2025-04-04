@@ -1,25 +1,38 @@
 import smtplib
-import email.message
 import os
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-# Envio de email para informar que o pipeline está sendo iniciado
-def enviar_email():
-    corpo_email = """
-    O pipeline está sendo iniciado!
+def send_email():
+    # Configurações Gmail
+    smtp_server = "smtp.gmail.com"
+    port = 587
+    sender_email = os.environ["GMAIL_EMAIL"]
+    password = os.environ["GMAIL_PASSWORD"]  # Usar APP PASSWORD
+    receiver_email = os.environ["DESTINATARIO_EMAIL"]
+
+    # Criar mensagem
+    msg = MIMEMultipart()
+    msg["From"] = sender_email
+    msg["To"] = receiver_email
+    msg["Subject"] = "Notificação: Pipeline Iniciado"
+    
+    # Corpo HTML
+    body = """
+    <p>O pipeline foi iniciado com sucesso!</p>
+    <p><b>Atenção:</b> Este é um e-mail automático.</p>
     """
-    msg = email.message.EmailMessage()
-    msg['Subject'] = 'Informação Pipeline'
-    msg['From'] = os.getenv("GMAIL_EMAIL")
-    msg['To'] = os.getenv("DESTINATARIO_EMAIL")
-    password = os.getenv("GMAIL_PASSWORD")
+    msg.attach(MIMEText(body, "html"))
 
-    msg.add_header("Content-Type", "text/html")
-    msg.set_payload(corpo_email)
+    # Enviar
+    try:
+        with smtplib.SMTP(smtp_server, port) as server:
+            server.starttls()
+            server.login(sender_email, password)
+            server.send_message(msg)
+        print("✅ E-mail enviado!")
+    except Exception as e:
+        print(f"❌ Falha no envio: {e}")
 
-    s = smtplib.SMTP('smtp.gmail.com', 587)
-    s.starttls()
-
-    s.login(msg['From'], password)
-    s.sendmail(msg['From'], msg['To'], msg.as_string().encode('utf-8'))
-    s.quit()
-enviar_email()
+if __name__ == "__main__":
+    send_email()
