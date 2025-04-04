@@ -77,12 +77,24 @@ jobs:
     name: Notificação de fim
     needs: build
     runs-on: ubuntu-latest
+    if: always()  # Executa mesmo se a build falhar
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Enviar e-mail inicial
+
+      - name: Determinar status
+        id: status_check
         run: |
-          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --tipo "end"
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "STATUS=success" >> $GITHUB_OUTPUT
+          else
+            echo "STATUS=failure" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Enviar e-mail final
+        run: |
+          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --tipo "end" --status "${{ steps.status_check.outputs.STATUS }}"
+
