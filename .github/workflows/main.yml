@@ -46,7 +46,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Enviar e-mail inicial
         run: |
-          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --receiver "start"
+          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --tipo "start"
 
   build:
     name: Empacotamento
@@ -75,6 +75,7 @@ jobs:
 
   end_notification:
     name: Notificação de fim
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -84,4 +85,4 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Enviar e-mail inicial
         run: |
-          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --receiver "end"
+          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --tipo "end"

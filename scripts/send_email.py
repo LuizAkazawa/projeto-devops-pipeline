@@ -7,7 +7,7 @@ def send_email(sender_email, password, receiver_email, tipo):
     smtp_server = "smtp.gmail.com"
     port = 587
 
-    # Criar mensagem#
+    # Criar mensagem
     msg = MIMEMultipart()
     msg["From"] = sender_email
     msg["To"] = receiver_email
@@ -26,7 +26,7 @@ def send_email(sender_email, password, receiver_email, tipo):
         <p>O pipeline foi finalizado com sucesso!</p>
         <p><b>Atenção:</b> Este é um e-mail automático.</p>
         """
-        
+
     msg.attach(MIMEText(body, "html"))
 
     try:
