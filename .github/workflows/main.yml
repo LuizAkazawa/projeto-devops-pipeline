@@ -35,9 +35,22 @@ jobs:
           name: test-report
           path: test-report.html
 
+  start_notification:
+    name: Notificação Inicial
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Enviar e-mail inicial
+        run: |
+          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --receiver "start"
+
   build:
     name: Empacotamento
-    needs: test
+    needs: [test, start_notification]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -60,9 +73,8 @@ jobs:
           name: calculadora-package
           path: dist/*
 
-  start_notification:
-    name: Notificação Inicial
-    needs: test
+  end_notification:
+    name: Notificação de fim
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,4 +84,4 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Enviar e-mail inicial
         run: |
-          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}"
+          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}" --receiver "end"

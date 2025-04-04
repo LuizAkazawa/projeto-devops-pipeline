@@ -3,7 +3,7 @@ import argparse
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-def send_email(sender_email, password, receiver_email):
+def send_email(sender_email, password, receiver_email, tipo):
     smtp_server = "smtp.gmail.com"
     port = 587
 
@@ -11,12 +11,22 @@ def send_email(sender_email, password, receiver_email):
     msg = MIMEMultipart()
     msg["From"] = sender_email
     msg["To"] = receiver_email
-    msg["Subject"] = "Notificação: Pipeline Iniciado"
 
-    body = """
-    <p>O pipeline foi iniciado com sucesso!</p>
-    <p><b>Atenção:</b> Este é um e-mail automático.</p>
-    """
+    if tipo == "start":
+        msg["Subject"] = "Notificação: Pipeline Iniciado"
+
+        body = """
+        <p>O pipeline foi iniciado com sucesso!</p>
+        <p><b>Atenção:</b> Este é um e-mail automático.</p>
+        """
+    elif tipo == "end":
+        msg["Subject"] = "Notificação: Pipeline Finalizado"
+
+        body = """
+        <p>O pipeline foi finalizado com sucesso!</p>
+        <p><b>Atenção:</b> Este é um e-mail automático.</p>
+        """
+        
     msg.attach(MIMEText(body, "html"))
 
     try:
@@ -33,6 +43,7 @@ if __name__ == "__main__":
     parser.add_argument("--sender", required=True)
     parser.add_argument("--password", required=True)
     parser.add_argument("--receiver", required=True)
+    parser.add_argument("--tipo", required=True)
     args = parser.parse_args()
 
     send_email(args.sender, args.password, args.receiver)
