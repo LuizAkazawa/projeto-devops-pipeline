@@ -1,14 +1,24 @@
-import os
 import smtplib
-from email.message import EmailMessage
+import email.message
+import os
 
-msg = EmailMessage()
-msg['Subject'] = 'Assunto Seguro'
-msg['From'] = os.environ['REMETENTE']
-msg['To'] = os.environ['DESTINATARIO']
-msg.set_content('Conteúdo protegido por secrets.')
+def enviar_email():
+    corpo_email = """
+    O pipeline está sendo iniciado!
+    """
+    msg = email.message.EmailMessage()
+    msg['Subject'] = 'Informação Pipeline'
+    msg['From'] = os.getenv("GMAIL_EMAIL")
+    msg['To'] = os.getenv("DESTINATARIO_EMAIL")
+    password = os.getenv("GMAIL_PASSWORD")
 
-with smtplib.SMTP('smtp.office365.com', 587) as smtp:
-    smtp.starttls()
-    smtp.login(os.environ['REMETENTE'], os.environ['SENHA'])
-    smtp.send_message(msg)
+    msg.add_header("Content-Type", "text/html")
+    msg.set_payload(corpo_email)
+
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s.starttls()
+
+    s.login(msg['From'], password)
+    s.sendmail(msg['From'], msg['To'], msg.as_string().encode('utf-8'))
+    s.quit()
+enviar_email()
