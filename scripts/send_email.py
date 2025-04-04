@@ -30,9 +30,9 @@ def send_email():
             server.starttls()
             server.login(sender_email, password)
             server.send_message(msg)
-        print("✅ E-mail enviado!")
+        print("E-mail enviado!")
     except Exception as e:
-        print(f"❌ Falha no envio: {e}")
+        print(f"Falha no envio: {e}")
 
 if __name__ == "__main__":
     send_email()
