@@ -92,6 +92,7 @@ jobs:
             echo "STATUS=success" >> $GITHUB_OUTPUT
           else
             echo "STATUS=failure" >> $GITHUB_OUTPUT
+          fi
         shell: bash
 
       - name: Enviar e-mail final
