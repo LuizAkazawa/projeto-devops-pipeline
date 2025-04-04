@@ -2,6 +2,7 @@ import smtplib
 import email.message
 import os
 
+# Envio de email para informar que o pipeline está sendo iniciado
 def enviar_email():
     corpo_email = """
     O pipeline está sendo iniciado!
