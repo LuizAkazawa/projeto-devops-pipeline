@@ -71,9 +71,5 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Enviar e-mail inicial
-        env:
-          REMETENTE: ${{ secrets.OUTLOOK_EMAIL }}
-          SENHA: ${{ secrets.OUTLOOK_PASSWORD }}
-          DESTINATARIO: ${{ secrets.DESTINATARIO_EMAIL }}
         run: |
-          python scripts/send_email.py
+          python scripts/send_email.py --sender "${{ secrets.GMAIL_EMAIL }}" --password "${{ secrets.GMAIL_APP_PASSWORD }}" --receiver "${{ secrets.DESTINATARIO_EMAIL }}"

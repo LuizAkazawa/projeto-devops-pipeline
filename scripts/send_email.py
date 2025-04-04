@@ -7,7 +7,7 @@ def send_email(sender_email, password, receiver_email):
     smtp_server = "smtp.gmail.com"
     port = 587
 
-    # Criar mensagem
+    # Criar mensagem#
     msg = MIMEMultipart()
     msg["From"] = sender_email
     msg["To"] = receiver_email
