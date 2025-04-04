@@ -1,17 +1,9 @@
 import smtplib
-import os
+import argparse
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-def send_email():
-    # Coletar variáveis de ambiente
-    sender_email = os.getenv("GMAIL_EMAIL")
-    password = os.getenv("GMAIL_PASSWORD")
-    receiver_email = os.getenv("DESTINATARIO_EMAIL")
-
-    if not sender_email or not password or not receiver_email:
-        raise ValueError("Uma ou mais variáveis de ambiente não estão definidas.")
-
+def send_email(sender_email, password, receiver_email):
     smtp_server = "smtp.gmail.com"
     port = 587
 
@@ -27,15 +19,20 @@ def send_email():
     """
     msg.attach(MIMEText(body, "html"))
 
-    # Enviar e-mail
     try:
         with smtplib.SMTP(smtp_server, port) as server:
             server.starttls()
             server.login(sender_email, password)
             server.send_message(msg)
-        print("✅ E-mail enviado com sucesso.")
+        print("E-mail enviado com sucesso.")
     except Exception as e:
-        print(f"❌ Erro ao enviar e-mail: {e}")
+        print(f"Erro ao enviar e-mail: {e}")
 
 if __name__ == "__main__":
-    send_email()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sender", required=True)
+    parser.add_argument("--password", required=True)
+    parser.add_argument("--receiver", required=True)
+    args = parser.parse_args()
+
+    send_email(args.sender, args.password, args.receiver)
