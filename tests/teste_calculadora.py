@@ -3,7 +3,7 @@ import sys
 import pytest
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.calculadora import Calculadora
+from calculadora.calculadora import Calculadora
 
 @pytest.fixture
 def calc():

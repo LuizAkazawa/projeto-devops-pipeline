@@ -1,2 +1,4 @@
 #!/bin/bash
-pip install pytest pytest-html setuptools
+python -m pip install --upgrade pip
+pip install pytest pytest-html
+pip install -e .
