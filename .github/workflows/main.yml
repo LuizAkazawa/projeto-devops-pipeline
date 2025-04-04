@@ -59,3 +59,21 @@ jobs:
         with:
           name: calculadora-package
           path: dist/*
+
+  start_notification:
+    name: Notificação Inicial
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Enviar e-mail inicial
+        env:
+          REMETENTE: ${{ secrets.OUTLOOK_EMAIL }}
+          SENHA: ${{ secrets.OUTLOOK_PASSWORD }}
+          DESTINATARIO: ${{ secrets.DESTINATARIO_EMAIL }}
+        run: |
+          python scripts/send_email.py
