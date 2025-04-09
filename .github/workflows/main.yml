@@ -87,7 +87,13 @@ jobs:
 
       - name: Determinar status
         id: status_check
-        run: bash scripts/determine_status.sh "${{ needs.build.result }}"
+        run: |
+          if [[ "${{ needs.build.result }}" == "success" ]]; then
+            echo "STATUS=success" >> $GITHUB_OUTPUT
+          else
+            echo "STATUS=failure" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
 
       - name: Enviar e-mail final
         run: |
